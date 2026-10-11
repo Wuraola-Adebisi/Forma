@@ -144,3 +144,23 @@
   .app-actions .btn-quiet { display: none; }
   .field-row { grid-template-columns: 1fr; }
 }
+
+
+/* Print-friendly room plan: users can print it or choose Save as PDF. */
+@page { size: auto; margin: 14mm; }
+@media print {
+  body { background: #fff !important; color: #17212b !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .app { display: block !important; height: auto !important; min-height: 0 !important; background: #fff !important; }
+  .app-bar { position: static !important; padding: 0 0 12px !important; border-bottom: 1px solid #d6dbd7 !important; }
+  .app-actions, .save-state, .panel, .wb-buttons, .toast { display: none !important; }
+  .app-plan { margin-left: auto !important; margin-right: 0 !important; }
+  .app-body { display: block !important; min-height: 0 !important; }
+  .workbench { display: block !important; min-height: 0 !important; }
+  .wb-tools { padding: 14px 0 !important; border-bottom: 0 !important; }
+  .wb-title span { display: inline !important; }
+  .stage { display: block !important; min-height: 0 !important; padding: 8mm 0 !important; overflow: visible !important; background: #fff !important; }
+  .stage > .plan { display: block !important; width: 100% !important; height: auto !important; max-width: 175mm; max-height: 235mm; margin: 0 auto !important; }
+  .wb-foot { padding: 10px 0 0 !important; border-top: 1px solid #d6dbd7 !important; }
+  .checks button { text-decoration: none !important; }
+  .plan-halo, .plan-focus, .plan-guides, .plan-ghosts { display: none !important; }
+}
