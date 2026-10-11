@@ -27,7 +27,7 @@ export function FurniturePanel(p: FurnitureProps) {
       <section className="panel-section">
         <h2 className="panel-title">In this room <span className="count">{p.items.length}</span></h2>
         {p.items.length === 0 ? (
-          <p className="note">The room is empty. Add a piece from the list below.</p>
+          <p className="note">Your room is empty. Add furniture from the catalogue below to get started.</p>
         ) : (
           <ul className="piece-list">
             {p.items.map((i) => (
@@ -76,7 +76,7 @@ export function FurniturePanel(p: FurnitureProps) {
             </button>
           ))}
         </div>
-        <p className="note">Catalogue sizes are starting points. Select a piece and enter its real measurements.</p>
+        <p className="note">Catalogue dimensions are estimates. Select a piece and enter its measured width and depth for a more accurate plan.</p>
       </section>
     </>
   )
@@ -107,10 +107,10 @@ export function RoomPanel({ room, onChange, onResetSample, onClear, hasItems }: 
       <section className="panel-section">
         <h2 className="panel-title">Start over</h2>
         <div className="button-row">
-          <button className="btn btn-quiet btn-sm" onClick={onResetSample}>Load sample bedroom</button>
+          <button className="btn btn-quiet btn-sm" onClick={onResetSample}>Load starter bedroom</button>
           <button className="btn btn-quiet btn-sm" onClick={onClear} disabled={!hasItems}>Remove all furniture</button>
         </div>
-        <p className="note">Doors and windows cannot be placed yet. Keep entrances clear by eye.</p>
+        <p className="note">Doors, windows and fixed features are not shown on the plan. Keep their positions and clearances in mind as you arrange furniture.</p>
       </section>
     </>
   )
