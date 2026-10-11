@@ -2,6 +2,7 @@
 .site { min-height: 100dvh; display: flex; flex-direction: column; }
 .site > main { flex: 1; }
 .site-header { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; padding-block: 18px; }
+.header-cta { justify-self: end; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font: 800 1.2rem/1 var(--font-display); letter-spacing: -0.03em; text-decoration: none; }
 .site-nav { display: flex; justify-content: center; gap: 4px; margin-inline: auto; }
 .site-nav a { padding: 8px 12px; border-radius: 8px; color: var(--ink-2); font-weight: 500; text-decoration: none; transition: color .2s ease, background-color .2s ease; }
