@@ -4,7 +4,7 @@ type Furniture = { id: string; name: string; width: number; depth: number; x: nu
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Cache-Control', 'no-store')
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed.' })
-  if (!process.env.OPENAI_API_KEY) return res.status(503).json({ error: 'AI planning is not configured yet. Add OPENAI_API_KEY to the server environment.' })
+  if (!process.env.OPENAI_API_KEY) return res.status(503).json({ error: 'Layout suggestions are temporarily unavailable. Please try again later.' })
   const { room, furniture, goal, constraints } = req.body ?? {}
   if (!room || !Array.isArray(furniture) || typeof goal !== 'string' || !goal.trim()) return res.status(400).json({ error: 'Add room dimensions, furniture, and a goal before requesting a layout.' })
   if (!Number.isFinite(room.width) || !Number.isFinite(room.depth) || room.width < 150 || room.width > 1200 || room.depth < 150 || room.depth > 1200) return res.status(400).json({ error: 'Room width and length must each be between 150 and 1,200 cm.' })
