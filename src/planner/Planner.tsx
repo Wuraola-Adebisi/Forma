@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Download, Expand, Grid2X2, Redo2, Ruler, Undo2, X, ZoomIn, ZoomOut } from 'lucide-react'
+import { Expand, Grid2X2, Printer, Redo2, Ruler, Undo2, X, ZoomIn, ZoomOut } from 'lucide-react'
 import { BRAND } from '../brand'
 import { Mark } from '../Mark'
 import { Link } from '../router'
@@ -153,14 +153,7 @@ export default function Planner() {
       setNotice('Could not save. Your browser may be blocking local storage.')
     }
   }
-  const exportPlan = () => {
-    const url = URL.createObjectURL(new Blob([JSON.stringify({ product: BRAND, room, items }, null, 2)], { type: 'application/json' }))
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'nexus-layout.json'
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+  const printPlan = () => window.print()
 
   const g = planGeometry(room)
   const fit = box.w && box.h ? Math.min(box.w / g.vw, box.h / g.vh) : 1
@@ -182,7 +175,7 @@ export default function Planner() {
         <div className="app-actions">
           <button className="icon-btn" onClick={undo} disabled={!doc.past.length} aria-label="Undo" title="Undo (Ctrl+Z)"><Undo2 size={17} /></button>
           <button className="icon-btn" onClick={redo} disabled={!doc.future.length} aria-label="Redo" title="Redo (Ctrl+Shift+Z)"><Redo2 size={17} /></button>
-          <button className="btn btn-quiet btn-sm" onClick={exportPlan}><Download size={14} /> Export</button>
+          <button className="btn btn-quiet btn-sm print-action" onClick={printPlan}><Printer size={14} /> Print / Save PDF</button>
           <button className="btn btn-primary btn-sm" onClick={save}>Save plan</button>
         </div>
       </header>
