@@ -1,9 +1,9 @@
 import Workspace from './App'
 
 const pages = [
-  { href: '/', label: 'Home' },
-  { href: '/how-it-works', label: 'How it works' },
-  { href: '/about', label: 'About NEXUS' },
+  { href: '/', label: 'The concept' },
+  { href: '/how-it-works', label: 'How to use it' },
+  { href: '/about', label: 'Why NEXUS' },
 ]
 
 function SiteFooter() {
@@ -11,12 +11,12 @@ function SiteFooter() {
     <div className="site-footer-main">
       <a className="site-brand" href="/" aria-label="NEXUS home">NEXUS<span>.</span></a>
       <p>A little more room to live<br />the way you want.</p>
-      <a className="footer-cta" href="/workspace">Open the room editor <span>↗</span></a>
+      <a className="footer-cta" href="/workspace">Open planner <span>↗</span></a>
     </div>
     <div className="site-footer-bottom">
       <span>© {new Date().getFullYear()} NEXUS</span>
       <div><a href="/how-it-works">How it works</a><a href="/about">About</a><a href="/privacy">Privacy</a><a href="https://github.com/Wuraola-Adebisi/Forma" target="_blank" rel="noreferrer">GitHub ↗</a></div>
-      <span>Bring your room together.</span>
+      <span>ROOM PLANNING, MADE PRACTICAL.</span>
     </div>
   </footer>
 }
@@ -25,47 +25,44 @@ function SiteHeader({ active }: { active: string }) {
   return <header className="site-header">
     <a className="site-brand" href="/" aria-label="NEXUS home">NEXUS<span>.</span></a>
     <nav aria-label="Main navigation">{pages.map(p => <a key={p.href} className={active === p.href ? 'current' : ''} href={p.href}>{p.label}</a>)}</nav>
-    <a className="site-header-cta" href="/workspace">Try NEXUS <span>↗</span></a>
+    <a className="site-header-cta" href="/workspace">Open planner <span>↗</span></a>
   </header>
 }
 
 function Home() {
   return <>
     <section className="home-hero">
-      <div className="hero-copy">
-        <span className="site-kicker"><i /> ROOM PLANNING, WITHOUT THE GUESSWORK</span>
-        <h1>Make room<br />for <em>better.</em></h1>
-        <p>A room can feel completely different without buying a single thing. Map your space, move the furniture you own, and find an arrangement that works for real life.</p>
-        <div className="hero-actions"><a className="site-button" href="/workspace">Plan my room <span>↗</span></a><a className="text-link" href="/how-it-works">How it works <span>↗</span></a></div>
-        <div className="hero-note"><span className="note-mark">01</span><span>Start with your dimensions. Make the space yours.</span></div>
+      <div className="hero-topline"><span>ROOM PLANNING TOOL / N° 001</span><span>DESIGNED TO MAKE SPACE</span></div>
+      <div className="hero-title-block">
+        <p className="hero-index-label">YOUR ROOM, RECONSIDERED.</p>
+        <h1>MAKE<br/><span>SPACE.</span></h1>
+        <div className="hero-summary"><p>Move the furniture on screen before you move it in real life. NEXUS turns your room measurements and the things you own into a plan you can actually test.</p><a className="hero-round-link" href="/workspace" aria-label="Open the room planner">↗</a></div>
       </div>
-      <div className="hero-art" aria-label="Illustrated top-down room plan">
-        <div className="art-board-head"><span>FIELD NOTE / N° 01</span><span>BEDROOM STUDY</span></div>
-        <div className="art-room">
-          <div className="art-rug"></div><div className="art-bed"><span></span><i></i><b></b></div>
-          <div className="art-desk"><span></span></div><div className="art-chair"></div><div className="art-plant"><i></i><i></i><i></i><b></b></div>
-          <div className="art-side-table"></div><div className="art-sun"></div>
-          <span className="art-measure measure-top">360 cm</span><span className="art-measure measure-side">420 cm</span>
+      <div className="hero-plan-panel">
+        <div className="plan-panel-top"><span>LIVE STUDY / BEDROOM A</span><span>01—04</span></div>
+        <div className="plan-diagram" aria-label="Top-down room layout illustration">
+          <div className="plan-wall-label plan-wall-top">360 CM</div><div className="plan-wall-label plan-wall-left">420 CM</div>
+          <div className="plan-grid"></div><div className="plan-rug"></div><div className="plan-bed"><i></i><b></b></div><div className="plan-desk"><i></i></div><div className="plan-chair"></div><div className="plan-wardrobe"></div><div className="plan-plant"><i></i><b></b></div>
+          <span className="plan-tag">CURRENT LAYOUT</span>
         </div>
-        <div className="art-board-foot"><span><i></i> FURNITURE STUDY</span><span>01 — TRY A NEW ARRANGEMENT</span></div>
-        <div className="art-sticker">KEEP<br />WHAT<br /><b>WORKS.</b></div>
+        <div className="plan-panel-bottom"><span><i></i> FURNITURE PLACEMENT</span><span>DRAG / ROTATE / REPEAT</span></div>
       </div>
-      <div className="hero-index">N / 001<br/>A MORE THOUGHTFUL ROOM</div>
+      <div className="hero-bottomline"><span>LESS GUESSWORK. MORE GOOD ARRANGEMENTS.</span><a href="/how-it-works">SEE HOW IT WORKS <b>↗</b></a></div>
     </section>
     <section className="home-intro site-section">
-      <div className="section-aside"><span>THE NEXUS METHOD</span><span>MEASURE. MOVE.</span><span>MAKE IT WORK.</span></div>
-      <div className="intro-main"><span className="section-index">01 / START WITH WHAT YOU HAVE</span><h2>Before you move<br />a thing, <em>see it.</em></h2><p>That sofa might fit better on the opposite wall. The desk could open up the whole room. NEXUS gives you a simple floor plan to try those ideas before you start lifting, shifting or spending.</p><a className="underlined-link" href="/workspace">Build your room plan <span>↗</span></a></div>
-      <div className="intro-side-note"><span>LESS BUYING.</span><span>MORE REARRANGING.</span><span>BETTER LIVING.</span></div>
+      <div className="intro-stamp"><span>THE POINT</span><b>01</b><span>USE WHAT<br/>YOU HAVE.</span></div>
+      <div className="intro-main"><p className="section-index">A DIFFERENT WAY TO THINK ABOUT YOUR ROOM</p><h2>Don't start<br/>with shopping.<br/><span>Start with space.</span></h2></div>
+      <div className="intro-copy"><p>That bed could work better against another wall. The desk might belong near the window. Instead of guessing, map the room, place your furniture and see how the pieces fit together.</p><p>NEXUS is for the decisions that are easier to make when you can see them first.</p><a className="underlined-link" href="/workspace">Build a room plan <span>↗</span></a></div>
     </section>
     <section className="feature-section">
-      <div className="feature-heading"><div><span>02 / A PRACTICAL TOOLKIT</span><h2>A few good moves<br /><em>can change everything.</em></h2></div><p>One room. Your furniture. More ways to make it work.</p></div>
+      <div className="feature-heading"><div><p className="section-index">THE TOOLKIT / 02</p><h2>Small moves.<br/><span>Different room.</span></h2></div><p>Practical tools for working out what your space can do, with the furniture already in it.</p></div>
       <div className="feature-grid">
-        <article className="feature-card feature-pink"><span className="feature-number">01</span><div className="feature-illustration furniture-illustration"><i></i><b></b><span></span></div><div className="feature-copy"><h3>Try it before you lift it</h3><p>Drag furniture around your floor plan, rotate pieces and compare arrangements without moving anything in the room.</p></div><span className="feature-arrow">↗</span></article>
-        <article className="feature-card feature-lime"><span className="feature-number">02</span><div className="feature-illustration measure-illustration"><i>360</i><b>↔</b><span>420</span></div><div className="feature-copy"><h3>Make the measurements count</h3><p>Work with room dimensions and furniture footprints to see what fits, what overlaps and where you have space.</p></div><span className="feature-arrow">↗</span></article>
-        <article className="feature-card feature-lilac"><span className="feature-number">03</span><div className="feature-illustration idea-illustration"><i>WHAT IF?</i><b>↗</b><span>ANOTHER ANGLE</span></div><div className="feature-copy"><h3>Get a fresh perspective</h3><p>Ask for an AI-assisted layout based on the furniture you have and the way you want the room to work.</p></div><span className="feature-arrow">↗</span></article>
+        <article className="feature-card feature-pink"><span className="feature-number">01 / MOVE</span><div className="feature-illustration furniture-illustration"><i></i><b></b><span></span></div><div className="feature-copy"><h3>Rearrange without the heavy lifting</h3><p>Drag and rotate furniture on a floor plan. Try the obvious idea, then the one you weren't sure would work.</p></div><a className="feature-card-link" href="/workspace" aria-label="Try moving furniture">↗</a></article>
+        <article className="feature-card feature-lime"><span className="feature-number">02 / MEASURE</span><div className="feature-illustration measure-illustration"><i>360</i><b>↔</b><span>420</span></div><div className="feature-copy"><h3>Know what fits</h3><p>Set room dimensions and furniture sizes. NEXUS flags overlaps and pieces that sit beyond the room boundary.</p></div><a className="feature-card-link" href="/how-it-works" aria-label="Learn how measurements work">↗</a></article>
+        <article className="feature-card feature-lilac"><span className="feature-number">03 / RE-THINK</span><div className="feature-illustration idea-illustration"><i>WHAT IF</i><b>↗</b><span>ANOTHER ARRANGEMENT</span></div><div className="feature-copy"><h3>Consider another angle</h3><p>Describe what you need from the room and request an AI-assisted layout using the furniture you already have.</p></div><a className="feature-card-link" href="/workspace" aria-label="Get a layout suggestion">↗</a></article>
       </div>
     </section>
-    <section className="home-bottom-cta"><div><span className="site-kicker">03 / YOUR SPACE, YOUR CALL</span><h2>Start with the room.<br /><em>Find your way.</em></h2><p>No account. No shopping list. Just a better way to explore your space.</p></div><a className="site-button dark-button" href="/workspace">Open the room planner <span>↗</span></a><span className="cta-serial">NEXUS<br/>ROOM TOOLS<br/>EST. 2026</span></section>
+    <section className="home-bottom-cta"><div><p className="section-index">YOUR SPACE / YOUR DECISION</p><h2>See what<br/><span>could fit.</span></h2><p className="cta-description">Start with the room you have. Work towards the room you want.</p></div><div className="cta-action"><span>NO ACCOUNT REQUIRED</span><a className="site-button dark-button" href="/workspace">Open the planner <b>↗</b></a></div><span className="cta-serial">NEXUS / 2026</span></section>
   </>
 }
 
