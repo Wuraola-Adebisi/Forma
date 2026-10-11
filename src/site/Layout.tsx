@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { BRAND, REPO_URL } from '../brand'
+import { BRAND } from '../brand'
 import { Mark } from '../Mark'
 import { Link } from '../router'
 
@@ -17,7 +17,7 @@ export function SiteHeader({ path }: { path: string }) {
           <Link key={n.to} to={n.to} aria-current={path === n.to ? 'page' : undefined}>{n.label}</Link>
         ))}
       </nav>
-      <Link to="/workspace" className="btn btn-primary btn-sm">Open planner</Link>
+      <Link to="/workspace" className="btn btn-primary btn-sm header-cta">Open planner</Link>
     </header>
   )
 }
@@ -25,14 +25,25 @@ export function SiteHeader({ path }: { path: string }) {
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="wrap footer-inner">
-        <p>© {new Date().getFullYear()} {BRAND}. Room planning for the furniture you already own.</p>
-        <nav className="footer-links" aria-label="Footer">
-          <Link to="/how-it-works">How it works</Link>
-          <Link to="/about">About</Link>
-          <Link to="/privacy">Privacy</Link>
-          <a href={REPO_URL} target="_blank" rel="noreferrer">GitHub</a>
-        </nav>
+      <div className="wrap footer-main">
+        <div className="footer-brand-block">
+          <Link to="/" className="brand footer-brand" aria-label={`${BRAND} home`}><Mark />{BRAND}</Link>
+          <p>Make room for the way you live.</p>
+          <Link to="/workspace" className="btn btn-primary">Plan your room</Link>
+        </div>
+        <div className="footer-nav-block">
+          <p className="footer-heading">Explore NEXUS</p>
+          <nav className="footer-links" aria-label="Footer">
+            <Link to="/workspace">Room planner</Link>
+            <Link to="/how-it-works">How it works</Link>
+            <Link to="/about">About NEXUS</Link>
+            <Link to="/privacy">Privacy</Link>
+          </nav>
+        </div>
+      </div>
+      <div className="wrap footer-bottom">
+        <p>© {new Date().getFullYear()} {BRAND}</p>
+        <p>Room planning, made more considered.</p>
       </div>
     </footer>
   )
