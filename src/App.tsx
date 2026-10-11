@@ -1,89 +1,34 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowDownLeft, ArrowRight, Check, Download, Expand, Grid2X2, Lightbulb, LoaderCircle, LockKeyhole, PanelsTopLeft, Plus, RotateCw, Ruler, Trash2, Undo2, X, ZoomIn, ZoomOut } from 'lucide-react'
+import { useEffect } from 'react'
+import { BRAND } from './brand'
+import Planner from './planner/Planner'
+import { usePath } from './router'
+import { Shell } from './site/Layout'
+import Home from './site/Home'
+import { About, HowItWorks, NotFound, Privacy } from './site/pages'
 
-type Kind='bed'|'sofa'|'desk'|'wardrobe'|'chair'|'table'|'plant'|'dresser'
-type Item={id:string;kind:Kind;name:string;width:number;depth:number;x:number;y:number;rotation:0|90|180|270}
-type Room={width:number;depth:number;name:string}
-type Placement={furnitureId:string;x:number;y:number;rotation:0|90|180|270}
-type Proposal={name:string;summary:string;tradeoffs:string[];placements:Placement[];items?:Item[];issues?:string[]}
-const initialRoom:Room={width:360,depth:420,name:'My bedroom'}
-const initial:Item[]=[
-{id:'bed-1',kind:'bed',name:'Double bed',width:200,depth:150,x:22,y:24,rotation:0},
-{id:'wardrobe-1',kind:'wardrobe',name:'Wardrobe',width:120,depth:60,x:230,y:24,rotation:0},
-{id:'desk-1',kind:'desk',name:'Work desk',width:120,depth:60,x:22,y:248,rotation:0},
-{id:'chair-1',kind:'chair',name:'Chair',width:52,depth:52,x:58,y:315,rotation:0},
-{id:'plant-1',kind:'plant',name:'Plant',width:34,depth:34,x:292,y:342,rotation:0}]
-const catalog:Array<{kind:Kind;name:string;width:number;depth:number}>= [
-{kind:'bed',name:'Bed',width:200,depth:150},{kind:'sofa',name:'Sofa',width:180,depth:82},{kind:'desk',name:'Desk',width:120,depth:60},{kind:'wardrobe',name:'Wardrobe',width:140,depth:60},{kind:'chair',name:'Chair',width:52,depth:52},{kind:'table',name:'Side table',width:55,depth:55},{kind:'dresser',name:'Dresser',width:100,depth:45},{kind:'plant',name:'Plant',width:34,depth:34}]
-const uid=()=>`item-${Math.random().toString(36).slice(2,9)}`
-const size=(i:Item)=>i.rotation%180===0?{width:i.width,depth:i.depth}:{width:i.depth,depth:i.width}
-const inside=(i:Item,r:Room)=>{const s=size(i);return i.x>=0&&i.y>=0&&i.x+s.width<=r.width&&i.y+s.depth<=r.depth}
-const overlaps=(a:Item,b:Item)=>{const x=size(a),y=size(b);return a.x<b.x+y.width&&a.x+x.width>b.x&&a.y<b.y+y.depth&&a.y+x.depth>b.y}
-function validate(items:Item[],room:Room){const out:string[]=[];items.forEach(i=>{if(!inside(i,room))out.push(`${i.name} extends beyond the room boundary`)});for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)if(overlaps(items[i],items[j]))out.push(`${items[i].name} overlaps ${items[j].name}`);return out}
-function Workspace(){
-const [room,setRoom]=useState<Room>(initialRoom),[items,setItems]=useState<Item[]>(initial),[selected,setSelected]=useState<string|null>('bed-1')
-const [tab,setTab]=useState<'furniture'|'room'>('furniture'),[goal,setGoal]=useState('I want more space to move around and a comfortable place to work.')
-const [proposal,setProposal]=useState<Proposal|null>(null),[thinking,setThinking]=useState(false),[error,setError]=useState(''),[zoom,setZoom]=useState(1),[grid,setGrid]=useState(true),[measurements,setMeasurements]=useState(true)
-const [history,setHistory]=useState<Item[][]>([]),[saved,setSaved]=useState(false),[notice,setNotice]=useState('')
-const svg=useRef<SVGSVGElement>(null),drag=useRef<{id:string;ox:number;oy:number;before:Item[]}|null>(null)
-const active=items.find(i=>i.id===selected)||null,issues=useMemo(()=>validate(items,room),[items,room])
-useEffect(()=>{try{const raw=localStorage.getItem('forma-workspace-v1');if(raw){const d=JSON.parse(raw);if(d.room&&Array.isArray(d.items)){setRoom(d.room);setItems(d.items);setSelected(d.items[0]?.id||null)}}}catch{/* Ignore invalid local data. */}},[])
-const commit=(next:Item[])=>{setHistory(h=>[...h.slice(-19),items]);setItems(next);setSaved(false)}
-const add=(c:typeof catalog[number])=>{const i:Item={...c,id:uid(),x:Math.max(0,Math.round((room.width-c.width)/2)),y:Math.max(0,Math.round((room.depth-c.depth)/2)),rotation:0};commit([...items,i]);setSelected(i.id);setNotice(`${c.name} added`)}
-const edit=(patch:Partial<Item>)=>{if(active)commit(items.map(i=>i.id===active.id?{...i,...patch}:i))}
-const undo=()=>{const old=history.at(-1);if(old){setItems(old);setHistory(h=>h.slice(0,-1));setSaved(false)}}
-const rotate=()=>{if(active)edit({rotation:((active.rotation+90)%360) as Item['rotation']})}
-const remove=()=>{if(active){commit(items.filter(i=>i.id!==active.id));setSelected(null)}}
-const pointerDown=(e:React.PointerEvent<SVGRectElement>,i:Item)=>{e.preventDefault();e.stopPropagation();setSelected(i.id);const el=svg.current;if(!el)return;const p=el.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(el.getScreenCTM()!.inverse());drag.current={id:i.id,ox:q.x-20-i.x,oy:q.y-20-i.y,before:items};el.setPointerCapture(e.pointerId)}
-const pointerMove=(e:React.PointerEvent<SVGSVGElement>)=>{if(!drag.current||!svg.current)return;const p=svg.current.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(svg.current.getScreenCTM()!.inverse());const d=drag.current;setItems(prev=>prev.map(i=>i.id===d.id?{...i,x:Math.round((q.x-20-d.ox)/5)*5,y:Math.round((q.y-20-d.oy)/5)*5}:i));setSaved(false)}
-const pointerUp=()=>{if(drag.current){const before=drag.current.before;drag.current=null;setHistory(h=>[...h.slice(-19),before])}}
-const ask=async()=>{if(!goal.trim())return;setThinking(true);setError('');setProposal(null);try{const r=await fetch('/api/suggest-layout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:{width:room.width,depth:room.depth,unit:'cm'},furniture:items,goal,constraints:['Rectangular room. Coordinates start at top-left inside corner. Preserve furniture dimensions.']})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Could not generate a layout.');const next=items.map(i=>{const p=data.placements.find((v:Placement)=>v.furnitureId===i.id);return p?{...i,x:Math.round(p.x),y:Math.round(p.y),rotation:p.rotation}:i});setProposal({...data,items:next,issues:validate(next,room)})}catch(e){setError(e instanceof Error?e.message:'Could not generate a layout. Try again.')}finally{setThinking(false)}}
-const apply=()=>{if(proposal?.items&&!proposal.issues?.length){commit(proposal.items);setProposal(null);setNotice('Layout applied')}}
-const save=()=>{localStorage.setItem('forma-workspace-v1',JSON.stringify({room,items}));setSaved(true);setNotice('Workspace saved on this device')}
-const exportPlan=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({product:'NEXUS',room,items},null,2)],{type:'application/json'}));a.download='nexus-layout.json';a.click();URL.revokeObjectURL(a.href)}
-const rw=room.width+40,rh=room.depth+40
-const goals:[string,string][]=[['More floor space','Maximise open floor space and keep furniture out of the main walking path.'],['A better work corner','Create a comfortable work corner with the desk and chair together, with enough room to sit and move.'],['Clearer walkways','Make movement through the room easier. Keep a clear path and avoid blocked access.'],['Better storage','Arrange furniture to make storage easier to access and use the available space efficiently.']]
-return <main className="app">
-<header className="topbar"><a className="brand" href="#"><span className="brand-mark"><i/></span>NEXUS<span className="period">.</span></a><nav className="workspace-nav" aria-label="Site navigation"><a href="/">The concept</a><a href="/how-it-works">How to use it</a><a href="/about">Why NEXUS</a></nav><div className="project-name"><span className="green-dot"/> {room.name}<span className="slash">/</span><span className="muted">Untitled plan</span></div><div className="top-actions"><span className="local-tag"><LockKeyhole size={12}/> Saved locally</span><button className="btn quiet small" onClick={exportPlan}><Download size={14}/> Export</button><button className="btn dark small" onClick={save}>{saved?<Check size={14}/>:null}{saved?'Saved':'Save plan'}</button></div></header>
-<div className="workspace">
-<aside className="sidebar"><div className="side-head"><div><span className="eyebrow">YOUR SPACE</span><h1>Bring your room<br/>into sync.</h1></div><span className="folio">01—03</span></div><p className="intro">Same room, new possibilities. Connect your furniture, measurements and ideas to find a layout that feels right.</p>
-<div className="tabs"><button className={tab==='furniture'?'tab active':'tab'} onClick={()=>setTab('furniture')}><Grid2X2 size={14}/> Furniture</button><button className={tab==='room'?'tab active':'tab'} onClick={()=>setTab('room')}><Ruler size={14}/> Room setup</button></div>
-{tab==='furniture'?<><div className="section-title"><span>IN YOUR ROOM</span><b>{String(items.length).padStart(2,'0')}</b></div><div className="inventory">{items.map(i=><button key={i.id} className={selected===i.id?'inventory-item chosen':'inventory-item'} onClick={()=>setSelected(i.id)}><span className={`swatch ${i.kind}`}><Glyph kind={i.kind}/></span><span className="inventory-text"><strong>{i.name}</strong><small>{i.width} × {i.depth} cm</small></span>{selected===i.id?<i className="selection-dot"/>:null}</button>)}</div><div className="section-title add-title"><span>ADD SOMETHING</span><small>+ ADD</small></div><div className="catalog">{catalog.map(c=><button key={c.kind} onClick={()=>add(c)}><span className={`catalog-swatch ${c.kind}`}><Glyph kind={c.kind}/></span><span>{c.name}</span><Plus size={12}/></button>)}</div>
-{active?<div className="object-editor"><div className="editor-title"><span>SELECTED OBJECT</span><button className="icon-btn" onClick={remove} aria-label="Remove object"><Trash2 size={14}/></button></div><div className="editor-name">{active.name}<button className="rotate" onClick={rotate}><RotateCw size={12}/> Rotate</button></div><div className="dimensions"><span>Width <b>{active.width} cm</b></span><span>Depth <b>{active.depth} cm</b></span></div><div className="xy"><label>X<input type="number" value={active.x} onChange={e=>edit({x:Number(e.target.value)})}/></label><label>Y<input type="number" value={active.y} onChange={e=>edit({y:Number(e.target.value)})}/></label></div></div>:null}
-</>:<div className="room-form"><div className="section-title"><span>ROOM DIMENSIONS</span></div><label>Room name<input value={room.name} onChange={e=>{setRoom({...room,name:e.target.value});setSaved(false)}}/></label><label>Width <small>cm</small><input type="number" min="150" max="1200" value={room.width} onChange={e=>{setRoom({...room,width:Math.max(150,Number(e.target.value))});setSaved(false)}}/></label><label>Length <small>cm</small><input type="number" min="150" max="1200" value={room.depth} onChange={e=>{setRoom({...room,depth:Math.max(150,Number(e.target.value))});setSaved(false)}}/></label><p className="room-tip">Keep entryways clear when arranging furniture. Doors and windows will be configurable in a later iteration.</p><button className="btn outline" onClick={()=>{setRoom(initialRoom);setSaved(false)}}>Reset dimensions</button></div>}
-<div className="sidebar-bottom"><span className="mini-mark">n.</span><span>Your room, brought together.</span><button className="icon-btn" onClick={undo} disabled={!history.length} title="Undo"><Undo2 size={15}/></button></div></aside>
-<section className="canvas-panel"><div className="canvas-head"><div className="canvas-title"><span className="green-dot"/><div><b>Floor plan</b><small>Top view · All measurements in cm</small></div></div><div className="canvas-tools"><button className={grid?'tool active':'tool'} title="Toggle grid" onClick={()=>setGrid(!grid)}><Grid2X2 size={14}/></button><button className={measurements?'tool active':'tool'} title="Toggle measurements" onClick={()=>setMeasurements(!measurements)}><Ruler size={14}/></button><i/><button className="tool" title="Zoom out" onClick={()=>setZoom(z=>Math.max(.65,+(z-.1).toFixed(2)))}><ZoomOut size={14}/></button><span className="zoom">{Math.round(zoom*100)}%</span><button className="tool" title="Zoom in" onClick={()=>setZoom(z=>Math.min(1.4,+(z+.1).toFixed(2)))}><ZoomIn size={14}/></button><button className="tool" title="Fit room" onClick={()=>setZoom(1)}><Expand size={14}/></button></div></div>
-<div className="stage"><span className="corner tl">PLAN / 01</span><span className="corner tr">SCALE 1:—</span><div className="stage-center"><svg ref={svg} viewBox={`0 0 ${rw} ${rh}`} style={{width:`${Math.min(84,66*zoom)}%`}} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp} onClick={e=>{if(e.target===svg.current)setSelected(null)}} aria-label="Interactive room floor plan. Drag furniture to rearrange it.">
-<defs><pattern id="grid-small" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#eadfd3" strokeWidth=".7"/></pattern><pattern id="grid-large" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="url(#grid-small)"/><path d="M100 0H0V100" fill="none" stroke="#dfcfc4" strokeWidth="1"/></pattern><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#64152b" floodOpacity=".09"/></filter></defs>
-<rect x="20" y="20" width={room.width} height={room.depth} fill={grid?'url(#grid-large)':'#fbfaf7'} stroke="#64152b" strokeWidth="3"/>
-<line x1="20" y1="10" x2={20+room.width} y2="10" stroke="#b99e96" strokeWidth=".8"/><line x1="20" y1="6" x2="20" y2="14" stroke="#b99e96"/><line x1={20+room.width} y1="6" x2={20+room.width} y2="14" stroke="#b99e96"/>{measurements?<text x={20+room.width/2} y="7" textAnchor="middle" className="measure-label">{room.width} cm</text>:null}
-<line x1="10" y1="20" x2="10" y2={20+room.depth} stroke="#b99e96" strokeWidth=".8"/><line x1="6" y1="20" x2="14" y2="20" stroke="#b99e96"/><line x1="6" y1={20+room.depth} x2="14" y2={20+room.depth} stroke="#b99e96"/>{measurements?<text x="6" y={20+room.depth/2} textAnchor="middle" transform={`rotate(-90 6 ${20+room.depth/2})`} className="measure-label">{room.depth} cm</text>:null}
-{items.map(i=><Shape key={i.id} item={i} selected={selected===i.id} down={e=>pointerDown(e,i)}/>)}</svg></div>
-<span className="corner bl">↖ DRAG TO REPOSITION</span><span className="corner br">NEXUS / ROOM REMIX</span><div className={issues.length?'canvas-status warning':'canvas-status'}><span>{issues.length?'!':'✓'}</span>{issues.length?issues.length+' layout issue'+(issues.length===1?'':'s')+' to resolve':'No overlaps detected'}</div></div>
-<div className="canvas-footer"><span><i className="legend-fill"/> Furniture footprint</span><span><i className="legend-outline"/> Selected object</span><span className="canvas-stats">{items.length} objects <b>·</b> {(room.width*room.depth/10000).toFixed(1)} m²</span></div></section>
-<aside className="assistant"><div className="assistant-head"><span className="ai-mark"><PanelsTopLeft size={18}/></span><div><span className="eyebrow">THE ROOM REMIXER</span><h2>Let’s remix it.</h2></div></div><p className="assistant-intro">Tell us what your room needs. Get a fresh furniture arrangement using the pieces you already have.</p>
-<label className="prompt-label" htmlFor="goal">WHAT WOULD YOU LIKE TO CHANGE?</label><textarea id="goal" value={goal} maxLength={1200} onChange={e=>setGoal(e.target.value)} placeholder="Describe what you want your room to do better…" rows={5}/><div className="prompt-meta"><span>Be specific about what matters to you.</span><span>{goal.length}/1200</span></div>
-<div className="suggestion-label">START WITH A GOAL</div><div className="goal-chips">{goals.map(([label,value])=><button key={label} onClick={()=>setGoal(value)}>{label}<ArrowDownLeft size={12}/></button>)}</div>
-<button className="btn accent generate" onClick={ask} disabled={thinking||!goal.trim()}>{thinking?<><LoaderCircle size={15} className="spin"/> Thinking through the space…</>:<>Rework my room <ArrowRight size={15}/></>}</button>
-{error?<div className="error"><span>!</span>{error}</div>:null}
-{proposal?<div className="proposal"><div className="proposal-top"><span><Check size={12}/> PROPOSAL READY</span><button className="icon-btn" onClick={()=>setProposal(null)} aria-label="Dismiss"><X size={14}/></button></div><h3>{proposal.name}</h3><p>{proposal.summary}</p>{proposal.issues?.length?<div className="proposal-warning"><Lightbulb size={13}/>{proposal.issues.slice(0,2).join('; ')}</div>:null}<ul>{proposal.tradeoffs?.slice(0,2).map((t,i)=><li key={i}>{t}</li>)}</ul><div className="proposal-actions"><button className="btn outline" onClick={()=>setProposal(null)}>Discard</button><button className="btn dark" disabled={Boolean(proposal.issues?.length)} onClick={apply}><Check size={13}/> Apply</button></div></div>:null}
-<div className="privacy-note"><LockKeyhole size={13}/><span>Your plan stays on this device unless you export it. AI suggestions use your room dimensions, furniture measurements and written goal.</span></div></aside></div>
-<footer className="footer"><span>NEXUS <b>/</b> BRING YOUR ROOM TOGETHER.</span><span>Plans stay in this browser unless you export them.</span><a href="/how-it-works">How it works</a><a href="/privacy">Privacy</a><a href="https://github.com/Wuraola-Adebisi/Forma" target="_blank" rel="noreferrer">GitHub <ArrowRight size={12}/></a><a href="/">Back to home ↗</a></footer>
-{notice?<div className="toast" role="status">{notice}<button onClick={()=>setNotice('')} aria-label="Dismiss"><X size={13}/></button></div>:null}</main>
+const titles: Record<string, string> = {
+  '/': `${BRAND}: try the layout before you lift anything`,
+  '/how-it-works': `How it works | ${BRAND}`,
+  '/about': `About | ${BRAND}`,
+  '/privacy': `Privacy | ${BRAND}`,
+  '/workspace': `Planner | ${BRAND}`,
 }
-function Glyph({kind}:{kind:Kind}){return <span className={'glyph g-'+kind}>{kind==='bed'?<i/>:kind==='sofa'?<span><i/><i/></span>:kind==='desk'?<i/>:kind==='wardrobe'?<i/>:kind==='chair'||kind==='table'?<i/>:kind==='plant'?'●':'≋'}</span>}
-function Shape({item,selected,down}:{item:Item;selected:boolean;down:(e:React.PointerEvent<SVGRectElement>)=>void}){
-const s=size(item),cx=20+item.x+s.width/2,cy=20+item.y+s.depth/2
-const palette:Record<Kind,[string,string]>={bed:['#e8bfc0','#64152b'],sofa:['#d9dfca','#586844'],desk:['#ead4c7','#64152b'],wardrobe:['#e7d9cd','#79575c'],chair:['#f0d9c9','#8f1735'],table:['#ead4c7','#64152b'],plant:['#d9dfca','#586844'],dresser:['#e8bfc0','#64152b']}
-const [fill,stroke]=palette[item.kind]
-return <g transform={`translate(${cx} ${cy}) rotate(${item.rotation}) translate(${-item.width/2} ${-item.depth/2})`} filter="url(#shadow)">
-{selected?<rect x="-5" y="-5" width={item.width+10} height={item.depth+10} fill="none" stroke="#a71e43" strokeWidth="2" strokeDasharray="5 4" rx="5"/>:null}
-<rect width={item.width} height={item.depth} rx="4" fill={fill} stroke={selected?'#a71e43':stroke} strokeWidth={selected?2.5:1.4}/>
-{item.kind==='bed'?<g><rect x="8" y="8" width={item.width-16} height="42" rx="4" fill="#f8f4ec" stroke={stroke}/><rect x="12" y="13" width={item.width/2-16} height="31" rx="3" fill="#fffdf8" stroke="#d7cbb9" strokeWidth=".7"/><rect x={item.width/2+4} y="13" width={item.width/2-16} height="31" rx="3" fill="#fffdf8" stroke="#d7cbb9" strokeWidth=".7"/><path d={`M8 58H${item.width-8}`} stroke={stroke}/></g>:null}
-{item.kind==='wardrobe'?<g><line x1={item.width/2} y1="5" x2={item.width/2} y2={item.depth-5} stroke={stroke}/><circle cx={item.width/2-5} cy={item.depth/2} r="2" fill={stroke}/><circle cx={item.width/2+5} cy={item.depth/2} r="2" fill={stroke}/></g>:null}
-{item.kind==='desk'||item.kind==='dresser'?<g><line x1="8" y1="9" x2={item.width-8} y2="9" stroke={stroke}/><line x1="8" y1={item.depth-9} x2={item.width-8} y2={item.depth-9} stroke={stroke}/></g>:null}
-{['chair','table','plant'].includes(item.kind)?<circle cx={item.width/2} cy={item.depth/2} r={Math.min(item.width,item.depth)*.24} fill={item.kind==='plant'?'#a8b99b':stroke} opacity=".7"/>:null}
-<text x={item.width/2} y={item.depth/2+(item.kind==='bed'?22:4)} textAnchor="middle" className="furniture-label">{item.kind.toUpperCase()}</text>
-<rect width={item.width} height={item.depth} fill="transparent" rx="4" style={{cursor:'grab',touchAction:'none'}} onPointerDown={down}/></g>
+
+export default function App() {
+  const path = usePath()
+
+  useEffect(() => {
+    document.title = titles[path] ?? `Page not found | ${BRAND}`
+  }, [path])
+
+  if (path === '/workspace') return <Planner />
+
+  const page =
+    path === '/' ? <Home /> :
+    path === '/how-it-works' ? <HowItWorks /> :
+    path === '/about' ? <About /> :
+    path === '/privacy' ? <Privacy /> :
+    <NotFound />
+
+  return <Shell path={path}>{page}</Shell>
 }
-export default Workspace

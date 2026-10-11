@@ -1,1 +1,4 @@
-{"functions":{"api/suggest-layout.ts":{"maxDuration":30}}}
+{
+  "functions": { "api/suggest-layout.ts": { "maxDuration": 30 } },
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+}
