@@ -20,8 +20,8 @@ const steps = [
     body: 'Choose the pieces you want to arrange, then edit each item’s name, width and depth to match your furniture. Catalogue measurements are starting points, so use your own measurements for a more accurate plan.',
   },
   {
-    title: 'Arrange and review',
-    body: 'Move and rotate pieces on the plan. NEXUS flags overlaps and furniture that extends beyond the room. You can also request another arrangement, preview it, and apply it if it works for you.',
+    title: 'Arrange, then ask AI',
+    body: 'Move and rotate pieces on the plan, or describe what you want to improve and ask NEXUS for a proposed arrangement. Preview the suggestion, check any flagged overlaps, and apply it only if it works for you.',
   },
   {
     title: 'Save your layout',
@@ -33,7 +33,7 @@ export function HowItWorks() {
   return (
     <main>
       <PageHead title="From room measurements to a layout">
-        Start with the room’s width and length, then add the furniture you want to fit into the space.
+        Combine a measured floor plan with AI-generated ideas to explore arrangements for the room and furniture you actually have.
       </PageHead>
       <section className="wrap">
         <ol className="steps">
@@ -57,6 +57,7 @@ export function HowItWorks() {
 const gaps = [
   ['Doors, windows and fixed features', 'These are not editable on the plan yet. Account for door swings, windows, radiators and other fixed features when measuring and reviewing your layout.'],
   ['Furniture measurements', 'Furniture is added and measured manually. Check each item’s real width and depth before relying on its placement.'],
+  ['AI suggestions', 'AI-generated arrangements are proposals based on the room dimensions, furniture details and goal you provide. Review the positions carefully, and check real-world access and clearance before moving anything.'],
   ['Saving and sharing', 'Plans are stored in your current browser. Use Print / Save PDF to create a readable copy for sharing or safekeeping. To continue editing on another device, you will need to recreate the plan there.'],
   ['Clearance and building requirements', 'NEXUS flags overlaps and furniture outside the room. It does not verify walkway clearance, door access, accessibility requirements or building-code compliance. Review these before moving furniture.'],
 ]
@@ -65,12 +66,12 @@ export function About() {
   return (
     <main>
       <PageHead title="Make room for the way you live">
-        NEXUS helps you think through a room layout before you start moving furniture, so you can compare arrangements using your room’s measurements.
+        NEXUS combines measured room planning with AI-assisted layout ideas, helping you think through a setup before you start moving furniture.
       </PageHead>
       <section className="wrap prose">
         <p>A piece of furniture can look like it will fit on the other side of the room and still leave too little space to move around. Finding that out after lifting and shifting everything is frustrating.</p>
-        <p>With NEXUS, you can map your room, add the furniture you already own, and try different positions on a measured floor plan. Check for overlaps, compare arrangements and decide what to move before you start.</p>
-        <p>For the most useful result, measure your furniture and account for doors, windows and other fixed features as you review the plan.</p>
+        <p>Map your room, add the furniture you already own, and use AI to explore different arrangements around a specific goal, from making more floor space to creating a work corner. Each suggestion gives you a concrete option to review on your floor plan.</p>
+        <p>AI can help you explore possibilities, but the quality of the plan still depends on accurate measurements. Account for doors, windows and other fixed features, and check real-world access and clearances before moving anything.</p>
       </section>
       <section className="wrap gaps">
         <h2>Before you move anything</h2>
