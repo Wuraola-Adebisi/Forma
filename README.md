@@ -1,23 +1,24 @@
 # Forma
 
-AI-assisted spatial planning for everyday spaces.
+**Working name:** Forma  
+**Product:** AI-assisted spatial planning for everyday spaces.
 
 Forma helps people experiment with furniture layouts, understand spatial constraints, and find arrangements that work for the way they live.
 
 ## Product direction
 
-- 2D room canvas with editable furniture placements
-- Room dimensions and furniture inventory
+- Interactive 2D room canvas with draggable and rotatable furniture
+- Room dimensions, furniture inventory, and layout issue checks
 - AI-assisted layout proposals from natural-language goals
-- Deterministic validation for boundaries and collisions
-- Local-first room persistence for the MVP
+- Deterministic client-side validation for room boundaries and furniture collisions
+- Local-first workspace saving and JSON export
 
 ## Stack
 
-- React + TypeScript + Vite
-- CSS for the visual system
+- React, TypeScript, Vite
+- SVG-based spatial canvas and custom CSS
 - Vercel serverless function for AI layout proposals
-- OpenAI API via server-side environment variables
+- OpenAI API called server-side
 
 ## Local development
 
@@ -26,13 +27,25 @@ npm install
 npm run dev
 ```
 
-The canvas and manual editing work without an API key. To enable AI proposals, configure `OPENAI_API_KEY` in the deployment environment and use Vercel's local development command (`vercel dev`) so the `/api/suggest-layout` function is available.
+The interactive canvas, furniture editing, local save, and JSON export work without an AI key. To test the serverless AI route locally, install/use the Vercel CLI and run:
 
-## Environment
+```bash
+npx vercel dev
+```
 
-- `OPENAI_API_KEY` — server-side only; never expose it as a `VITE_` variable.
-- `OPENAI_MODEL` — optional model override. Defaults to `gpt-4.1-mini`.
+Configure `OPENAI_API_KEY` in the Vercel project environment before using AI suggestions. Optionally set `OPENAI_MODEL`; the default is `gpt-4.1-mini`. Never expose the API key through a `VITE_*` variable or commit it to the repository.
+
+## Current MVP boundaries
+
+- Furniture is entered manually; photo-based room recognition is not implemented.
+- Doors, windows, and other fixed obstructions are not yet editable features. Keep entryways clear manually for now.
+- AI-generated positions are checked for room boundaries and furniture overlap before they can be applied. The current checks do not establish building-code compliance or guarantee safe circulation widths.
+- Workspaces are stored in the current browser when saved. JSON export is available for portability; there is no account or cloud sync.
+
+## Brand note
+
+Forma is a working name, not a cleared trademark. Research found existing products using FORMA in interior design and spatial commerce, so verify trademark, domain, and app-store conflicts before public launch.
 
 ## Status
 
-Initial MVP build. AI proposals require a configured API key; geometry validation runs in the client before proposals are applied.
+Initial MVP implementation. AI suggestions require a configured server-side API key.
