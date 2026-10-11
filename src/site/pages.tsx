@@ -12,28 +12,28 @@ function PageHead({ title, children }: { title: string; children: string }) {
 
 const steps = [
   {
-    title: 'Set up the room',
-    body: 'Open the Room tab, name the room and enter its width and length in centimetres. The planner starts with a sample bedroom that you can edit or reset.',
+    title: 'Measure your room',
+    body: 'Open the Room tab, name the space, and enter its width and length in centimetres. Start with the provided room layout or enter your own measurements.',
   },
   {
-    title: 'Add your furniture',
-    body: 'Pick pieces from the Furniture tab, then change each one\'s name and size to match the real thing. Catalogue sizes are only a starting point.',
+    title: 'Add the furniture',
+    body: 'Choose the pieces you want to arrange, then edit each item’s name, width and depth to match your furniture. Catalogue measurements are starting points, so use your own measurements for a more accurate plan.',
   },
   {
-    title: 'Arrange and check',
-    body: 'Drag pieces around the plan. Overlaps and pieces outside the walls are flagged straight away. If you want a second idea, ask for a suggested layout and preview it before you apply it.',
+    title: 'Arrange and review',
+    body: 'Move and rotate pieces on the plan. NEXUS flags overlaps and furniture that extends beyond the room. You can also request another arrangement, preview it, and apply it if it works for you.',
   },
   {
-    title: 'Save or export',
-    body: 'Save the plan in this browser, or export a JSON copy to keep elsewhere. Saved plans do not sync between devices.',
+    title: 'Save your layout',
+    body: 'Save the plan in your current browser or export a JSON file to keep a separate copy. Plans are stored locally and do not automatically sync between devices.',
   },
 ]
 
 export function HowItWorks() {
   return (
     <main>
-      <PageHead title="Four steps from tape measure to plan">
-        You need the width and length of the room, and rough sizes for the furniture you plan to use.
+      <PageHead title="From room measurements to a layout">
+        Start with the room’s width and length, then add the furniture you want to fit into the space.
       </PageHead>
       <section className="wrap">
         <ol className="steps">
@@ -49,31 +49,31 @@ export function HowItWorks() {
         </ol>
       </section>
       <div className="spacer" />
-      <CtaBand title="Your room is the brief." />
+      <CtaBand title="Start with the room you have." />
     </main>
   )
 }
 
 const gaps = [
-  ['Doors and windows', 'They cannot be placed on the plan yet, so keep entrances clear by eye.'],
-  ['Room photos', 'Furniture is entered by hand. The planner does not read photos.'],
-  ['Accounts and sync', 'Plans live in your browser. Export a file to move one to another device.'],
-  ['Building rules', 'Checks cover overlaps and walls only. They do not confirm walkway widths or building code compliance.'],
+  ['Doors, windows and fixed features', 'These are not editable on the plan yet. Account for door swings, windows, radiators and other fixed features when measuring and reviewing your layout.'],
+  ['Furniture measurements', 'Furniture is added and measured manually. Check each item’s real width and depth before relying on its placement.'],
+  ['Saving across devices', 'Plans are stored in your current browser. Export a copy if you need to keep it elsewhere or move it to another device.'],
+  ['Clearance and building requirements', 'NEXUS flags overlaps and furniture outside the room. It does not verify walkway clearance, door access, accessibility requirements or building-code compliance. Review these before moving furniture.'],
 ]
 
 export function About() {
   return (
     <main>
-      <PageHead title="It is hard to picture a new layout from inside the old one">
-        NEXUS gives you a drawing to experiment on, so you can test an arrangement before you shift anything heavy.
+      <PageHead title="Make room for the way you live">
+        NEXUS helps you think through a room layout before you start moving furniture, so you can compare arrangements using your room’s measurements.
       </PageHead>
       <section className="wrap prose">
-        <p>Most rearranging happens in your head first and in your back second. A bed that looks like it fits against the other wall might block the wardrobe door, and you only find out once it has been moved.</p>
-        <p>NEXUS keeps that experiment on screen. You enter the room and the furniture you already own, and the plan shows what fits, what overlaps and how much floor is left.</p>
-        <p>It is an early version, and the list below says what it does not do yet.</p>
+        <p>A piece of furniture can look like it will fit on the other side of the room and still leave too little space to move around. Finding that out after lifting and shifting everything is frustrating.</p>
+        <p>With NEXUS, you can map your room, add the furniture you already own, and try different positions on a measured floor plan. Check for overlaps, compare arrangements and decide what to move before you start.</p>
+        <p>For the most useful result, measure your furniture and account for doors, windows and other fixed features as you review the plan.</p>
       </section>
       <section className="wrap gaps">
-        <h2>What it does not do yet</h2>
+        <h2>Before you move anything</h2>
         <dl>
           {gaps.map(([term, text]) => (
             <div key={term}>
@@ -83,23 +83,23 @@ export function About() {
           ))}
         </dl>
       </section>
-      <CtaBand title="Open the planner and try your own room." />
+      <CtaBand title="Put your room measurements to work." />
     </main>
   )
 }
 
 const privacy = [
-  ['Saved plans', 'When you press Save, the room dimensions and furniture are stored in this browser\'s local storage. They stay on this device and are not tied to an account. Clearing your browser data removes them.'],
-  ['Layout suggestions', 'When you ask for a suggestion, NEXUS sends the room dimensions, furniture sizes and positions, and the goal you typed to its layout service. That service passes them to an AI provider to produce the proposal. Leave personal details out of the goal text.'],
-  ['Exports', 'Exporting downloads a JSON file to your device. Where it goes after that is up to you.'],
-  ['Accounts and tracking', 'The planner needs no account. This page does not cover logs kept by the hosting provider, which follow that provider\'s own policies.'],
+  ['Saved plans', 'When you press Save, your room dimensions and furniture layout are stored in this browser’s local storage. They are not attached to an account or automatically sent to NEXUS. Clearing this browser’s site data can remove saved plans.'],
+  ['AI layout suggestions', 'When you request a layout suggestion, NEXUS sends your room dimensions, furniture details and positions, and the goal you enter to its layout service. The service sends that information to its AI provider to generate a proposal. Do not include sensitive or personal information in your goal text.'],
+  ['Exported plans', 'When you export a plan, NEXUS downloads a JSON file to your device. You control where that file is stored and who can access it.'],
+  ['Accounts and service providers', 'You can use the planner without creating an account. The service is hosted by third-party providers, which may process technical data under their own privacy policies.'],
 ]
 
 export function Privacy() {
   return (
     <main>
-      <PageHead title="How NEXUS handles your plan">
-        A plain summary of what is stored, what is sent and where it goes.
+      <PageHead title="Your plan, your device">
+        Understand what NEXUS stores locally and what is shared when you request an AI layout suggestion.
       </PageHead>
       <section className="wrap policy">
         {privacy.map(([title, text]) => (
@@ -108,7 +108,6 @@ export function Privacy() {
             <p>{text}</p>
           </article>
         ))}
-        <p className="fine-print">This describes the current early version and will change as the product does.</p>
       </section>
     </main>
   )
@@ -117,11 +116,11 @@ export function Privacy() {
 export function NotFound() {
   return (
     <main>
-      <PageHead title="That page does not exist">
-        The link may be out of date or mistyped.
+      <PageHead title="We couldn’t find that page">
+        Check the address or return to NEXUS to plan your room.
       </PageHead>
       <section className="wrap">
-        <Link to="/" className="btn btn-dark">Back to the home page</Link>
+        <Link to="/" className="btn btn-dark">Back to NEXUS</Link>
       </section>
     </main>
   )
