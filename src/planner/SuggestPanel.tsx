@@ -52,8 +52,8 @@ export default function SuggestPanel({ room, items, onPreview, onApply }: Props)
       if (!res.ok || !data || !Array.isArray(data.placements)) {
         throw new Error(
           res.status === 404
-            ? 'Suggestions need the server function. Run the project with "npx vercel dev" or use the deployed site.'
-            : data?.error ?? 'Could not generate a layout. Try again.',
+            ? 'Layout suggestions are unavailable right now. Please try again later.'
+            : data?.error ?? 'We couldn’t create a layout just now. Please try again.',
         )
       }
       const next = items.map((i) => {
@@ -69,7 +69,7 @@ export default function SuggestPanel({ room, items, onPreview, onApply }: Props)
         base,
       })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not generate a layout. Try again.')
+      setError(e instanceof Error ? e.message : 'We couldn’t create a layout just now. Please try again.')
     } finally {
       setBusy(false)
     }
@@ -80,24 +80,24 @@ export default function SuggestPanel({ room, items, onPreview, onApply }: Props)
   return (
     <>
       <section className="panel-section">
-        <h2 className="panel-title">Suggest a layout</h2>
+        <h2 className="panel-title">Find another layout</h2>
         <p className="note lead-note">
-          Describe what the room should do better. The suggestion shows on the plan as dashed outlines until you apply it.
+          Tell NEXUS what you want to improve. Review the suggested positions on your floor plan before applying them.
         </p>
         <label className="field">
-          <span>What should change?</span>
+          <span>What would you like to change?</span>
           <textarea value={goal} maxLength={1200} rows={5} onChange={(e) => setGoal(e.target.value)} />
         </label>
         <p className="counter">{goal.length} of 1200</p>
-        <div className="chips" role="group" aria-label="Example goals">
+        <div className="chips" role="group" aria-label="Quick layout goals">
           {GOALS.map(([label, value]) => (
             <button key={label} className="chip" onClick={() => setGoal(value)}>{label}</button>
           ))}
         </div>
         <button className="btn btn-primary btn-block" onClick={ask} disabled={busy || !goal.trim() || items.length === 0}>
-          {busy ? <><LoaderCircle size={16} className="spin" /> Working on it</> : 'Suggest a layout'}
+          {busy ? <><LoaderCircle size={16} className="spin" /> Finding options</> : 'Find a layout'}
         </button>
-        {items.length === 0 ? <p className="note">Add some furniture first.</p> : null}
+        {items.length === 0 ? <p className="note">Add furniture to your room to get a layout suggestion.</p> : null}
         {error ? <p className="callout callout-warn" role="alert"><TriangleAlert size={16} /> {error}</p> : null}
       </section>
 
@@ -112,9 +112,9 @@ export default function SuggestPanel({ room, items, onPreview, onApply }: Props)
             <ul className="tradeoffs">{proposal.tradeoffs.map((t, i) => <li key={i}>{t}</li>)}</ul>
           ) : null}
           {stale ? (
-            <p className="callout callout-warn"><TriangleAlert size={16} /> The plan has changed since this suggestion. Request a new one.</p>
+            <p className="callout callout-warn"><TriangleAlert size={16} /> Your room or furniture has changed since this suggestion was created. Find a new layout to match your current plan.</p>
           ) : proposal.issues.length ? (
-            <p className="callout callout-warn"><TriangleAlert size={16} /> {proposal.issues.slice(0, 2).map((s) => s.message).join('. ')}. This layout cannot be applied.</p>
+            <p className="callout callout-warn"><TriangleAlert size={16} /> {proposal.issues.slice(0, 2).map((s) => s.message).join('. ')}. Adjust the arrangement before applying it.</p>
           ) : null}
           <div className="button-row">
             <button className="btn btn-quiet btn-sm" onClick={() => setProposal(null)}>Discard</button>
@@ -126,7 +126,7 @@ export default function SuggestPanel({ room, items, onPreview, onApply }: Props)
       ) : null}
 
       <p className="privacy-note">
-        A suggestion sends your room size, furniture and this text to an AI service. Everything else stays on this device.
+        To create a suggestion, NEXUS sends your room dimensions, furniture details and the goal you enter to its AI service. Your plan is otherwise saved only in this browser.
       </p>
     </>
   )
