@@ -1,9 +1,8 @@
-# Forma
+# NEXUS
 
-**Working name:** Forma  
-**Product:** AI-assisted spatial planning for everyday spaces.
+**Product:** AI-assisted room planning for everyday spaces.
 
-Forma helps people experiment with furniture layouts, understand spatial constraints, and find arrangements that work for the way they live.
+NEXUS brings room dimensions, furniture and layout ideas together in one practical workspace. Experiment with arrangements, understand spatial constraints, and find a setup that works for the way you live.
 
 ## Product direction
 
@@ -44,7 +43,7 @@ Configure `OPENAI_API_KEY` in the Vercel project environment before using AI sug
 
 ## Brand note
 
-Forma is a working name, not a cleared trademark. Research found existing products using FORMA in interior design and spatial commerce, so verify trademark, domain, and app-store conflicts before public launch.
+NEXUS is the product's current working name. Check trademark, domain, and app-store availability before public launch.
 
 ## Status
 
