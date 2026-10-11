@@ -20,7 +20,7 @@ const size=(i:Item)=>i.rotation%180===0?{width:i.width,depth:i.depth}:{width:i.d
 const inside=(i:Item,r:Room)=>{const s=size(i);return i.x>=0&&i.y>=0&&i.x+s.width<=r.width&&i.y+s.depth<=r.depth}
 const overlaps=(a:Item,b:Item)=>{const x=size(a),y=size(b);return a.x<b.x+y.width&&a.x+x.width>b.x&&a.y<b.y+y.depth&&a.y+x.depth>b.y}
 function validate(items:Item[],room:Room){const out:string[]=[];items.forEach(i=>{if(!inside(i,room))out.push(`${i.name} extends beyond the room boundary`)});for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)if(overlaps(items[i],items[j]))out.push(`${items[i].name} overlaps ${items[j].name}`);return out}
-function App(){
+function Workspace(){
 const [room,setRoom]=useState<Room>(initialRoom),[items,setItems]=useState<Item[]>(initial),[selected,setSelected]=useState<string|null>('bed-1')
 const [tab,setTab]=useState<'furniture'|'room'>('furniture'),[goal,setGoal]=useState('I want more space to move around and a comfortable place to work.')
 const [proposal,setProposal]=useState<Proposal|null>(null),[thinking,setThinking]=useState(false),[error,setError]=useState(''),[zoom,setZoom]=useState(1),[grid,setGrid]=useState(true),[measurements,setMeasurements]=useState(true)
