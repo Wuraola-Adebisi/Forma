@@ -86,4 +86,4 @@ return <g transform={`translate(${cx} ${cy}) rotate(${item.rotation}) translate(
 <text x={item.width/2} y={item.depth/2+(item.kind==='bed'?22:4)} textAnchor="middle" className="furniture-label">{item.kind.toUpperCase()}</text>
 <rect width={item.width} height={item.depth} fill="transparent" rx="4" style={{cursor:'grab',touchAction:'none'}} onPointerDown={down}/></g>
 }
-export default App
+export default Workspace
