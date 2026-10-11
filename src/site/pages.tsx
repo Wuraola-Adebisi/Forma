@@ -25,7 +25,7 @@ const steps = [
   },
   {
     title: 'Save your layout',
-    body: 'Save the plan in your current browser or export a JSON file to keep a separate copy. Plans are stored locally and do not automatically sync between devices.',
+    body: 'Save the plan in your current browser, or use Print / Save PDF to keep a readable copy you can share. Plans are stored locally and do not automatically sync between devices.',
   },
 ]
 
@@ -57,7 +57,7 @@ export function HowItWorks() {
 const gaps = [
   ['Doors, windows and fixed features', 'These are not editable on the plan yet. Account for door swings, windows, radiators and other fixed features when measuring and reviewing your layout.'],
   ['Furniture measurements', 'Furniture is added and measured manually. Check each item’s real width and depth before relying on its placement.'],
-  ['Saving across devices', 'Plans are stored in your current browser. Export a copy if you need to keep it elsewhere or move it to another device.'],
+  ['Saving and sharing', 'Plans are stored in your current browser. Use Print / Save PDF to create a readable copy for sharing or safekeeping. To continue editing on another device, you will need to recreate the plan there.'],
   ['Clearance and building requirements', 'NEXUS flags overlaps and furniture outside the room. It does not verify walkway clearance, door access, accessibility requirements or building-code compliance. Review these before moving furniture.'],
 ]
 
@@ -91,7 +91,7 @@ export function About() {
 const privacy = [
   ['Saved plans', 'When you press Save, your room dimensions and furniture layout are stored in this browser’s local storage. They are not attached to an account or automatically sent to NEXUS. Clearing this browser’s site data can remove saved plans.'],
   ['AI layout suggestions', 'When you request a layout suggestion, NEXUS sends your room dimensions, furniture details and positions, and the goal you enter to its layout service. The service sends that information to its AI provider to generate a proposal. Do not include sensitive or personal information in your goal text.'],
-  ['Exported plans', 'When you export a plan, NEXUS downloads a JSON file to your device. You control where that file is stored and who can access it.'],
+  ['Printed or saved copies', 'If you choose Print / Save PDF, your browser or operating system handles printing or creating the PDF. NEXUS does not upload that PDF. You control where you save it and who can access it.'],
   ['Accounts and service providers', 'You can use the planner without creating an account. The service is hosted by third-party providers, which may process technical data under their own privacy policies.'],
 ]
 
