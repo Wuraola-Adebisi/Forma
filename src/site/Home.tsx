@@ -4,20 +4,20 @@ import HeroPlanner from './HeroPlanner'
 
 const features = [
   {
-    title: 'Drag, rotate and nudge',
-    body: 'Move pieces with a mouse, a finger or the arrow keys. Positions snap to 5 cm, and pieces sit flush when you bring them close to a wall.',
+    title: 'Arrange furniture your way',
+    body: 'Move, rotate and fine-tune each piece with a mouse, a finger or the arrow keys. Positions snap to 5 cm for more precise placement.',
   },
   {
-    title: 'Fit checks as you go',
-    body: 'Overlaps and pieces that reach past a wall are highlighted on the plan and listed under it. Pick one from the list to jump to it.',
+    title: 'Spot fit issues early',
+    body: 'See when furniture overlaps or extends beyond the room. Select an issue to locate the piece and adjust your layout.',
   },
   {
-    title: 'Layout suggestions',
-    body: 'Describe what you want from the room and ask for an arrangement. It appears on your plan as dashed outlines, and nothing moves until you apply it.',
+    title: 'Explore another arrangement',
+    body: 'Describe what you want to improve and get a layout suggestion. Preview the proposed positions before deciding whether to apply them.',
   },
   {
-    title: 'Saved on your device',
-    body: 'Save the plan in your browser or export it as a JSON file. Nothing leaves your device unless you ask for a suggestion.',
+    title: 'Keep your plan close',
+    body: 'Save your layout in this browser or export a copy for your records. Your room plan stays on your device unless you request an AI suggestion.',
   },
 ]
 
@@ -28,13 +28,13 @@ export default function Home() {
         <div className="hero-copy">
           <h1>Try the layout before you lift anything.</h1>
           <p className="lede">
-            NEXUS is a floor plan you can drag furniture around. Enter your room's measurements, add what you own, and see what fits.
+            Plan your room around the furniture you already own. Enter your measurements, arrange each piece, and see where things fit before you start moving.
           </p>
           <div className="hero-actions">
-            <Link to="/workspace" className="btn btn-primary btn-lg">Open the planner</Link>
-            <Link to="/how-it-works" className="text-link">See how it works</Link>
+            <Link to="/workspace" className="btn btn-primary btn-lg">Plan my room</Link>
+            <Link to="/how-it-works" className="text-link">How it works</Link>
           </div>
-          <p className="hero-note">No account needed. Plans stay in your browser.</p>
+          <p className="hero-note">Free to use. No account needed. Your plan stays in this browser.</p>
         </div>
         <HeroPlanner />
       </section>
@@ -42,8 +42,8 @@ export default function Home() {
       <section className="section">
         <div className="wrap split">
           <div className="lead">
-            <h2>Everything is drawn from your measurements</h2>
-            <p>The plan uses centimetres throughout, with rulers along the edges so you can read positions straight off the drawing.</p>
+            <h2>Make the measurements work for you</h2>
+            <p>Build a room plan to scale in centimetres. Use the rulers and furniture measurements to make more informed decisions before rearranging your space.</p>
           </div>
           <ul className="rows">
             {features.map((f) => (
@@ -56,7 +56,7 @@ export default function Home() {
         </div>
       </section>
 
-      <CtaBand title="Measure the room, then start moving things around." />
+      <CtaBand title="A better layout starts with a few measurements." />
     </main>
   )
 }
