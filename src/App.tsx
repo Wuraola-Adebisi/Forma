@@ -74,7 +74,7 @@ return <main className="app">
 function Glyph({kind}:{kind:Kind}){return <span className={'glyph g-'+kind}>{kind==='bed'?<i/>:kind==='sofa'?<span><i/><i/></span>:kind==='desk'?<i/>:kind==='wardrobe'?<i/>:kind==='chair'||kind==='table'?<i/>:kind==='plant'?'✳':'≋'}</span>}
 function Shape({item,selected,down}:{item:Item;selected:boolean;down:(e:React.PointerEvent<SVGRectElement>)=>void}){
 const s=size(item),cx=20+item.x+s.width/2,cy=20+item.y+s.depth/2
-const palette:Record<Kind,[string,string]>={bed:['#e9ddcb','#bba991'],sofa:['#dce4d6','#9cac91'],desk:['#e9c9ba','#c68d76'],wardrobe:['#ded7e8','#a89abf'],chair:['#d5e0ec','#91a9c1'],table:['#e9ddcb','#bba991'],plant:['#dce4d6','#9cac91'],dresser:['#e9c9ba','#c68d76']}
+const palette:Record<Kind,[string,string]>={bed:['#fff0a6','#20133d'],sofa:['#dce4d6','#9cac91'],desk:['#e9c9ba','#c68d76'],wardrobe:['#ded7e8','#a89abf'],chair:['#d5e0ec','#91a9c1'],table:['#e9ddcb','#bba991'],plant:['#dce4d6','#9cac91'],dresser:['#e9c9ba','#c68d76']}
 const [fill,stroke]=palette[item.kind]
 return <g transform={`translate(${cx} ${cy}) rotate(${item.rotation}) translate(${-item.width/2} ${-item.depth/2})`} filter="url(#shadow)">
 {selected?<rect x="-5" y="-5" width={item.width+10} height={item.depth+10} fill="none" stroke="#bd5a3b" strokeWidth="2" strokeDasharray="5 4" rx="5"/>:null}
