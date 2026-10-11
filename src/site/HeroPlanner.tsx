@@ -28,7 +28,7 @@ export default function HeroPlanner() {
         selectedId={selectedId}
         flagged={flagged}
         settle
-        label="Example bedroom floor plan. Drag the furniture to rearrange it."
+        label="Interactive bedroom floor plan. Drag furniture to explore different arrangements."
         onSelect={setSelectedId}
         onMove={(id, x, y) => setItems((list) => list.map((i) => (i.id === id ? { ...i, x, y } : i)))}
         onNudge={(id, x, y) => setItems((list) => list.map((i) => (i.id === id ? { ...i, x, y } : i)))}
@@ -38,7 +38,7 @@ export default function HeroPlanner() {
         <span className={issues.length ? 'status warn' : 'status ok'} aria-live="polite">
           {issues.length ? issues[0].message : 'Everything fits'}
         </span>
-        <span className="hint">Drag a piece to move it. Select one and press R to turn it.</span>
+        <span className="hint">Drag a piece to move it. Select one and press R to rotate it.</span>
       </figcaption>
     </figure>
   )
