@@ -9,7 +9,7 @@ type Proposal={name:string;summary:string;tradeoffs:string[];placements:Placemen
 const initialRoom:Room={width:360,depth:420,name:'My bedroom'}
 const initial:Item[]=[
 {id:'bed-1',kind:'bed',name:'Double bed',width:200,depth:150,x:22,y:24,rotation:0},
-{id:'wardrobe-1',kind:'wardrobe',name:'Wardrobe',width:120,depth:60,x:218,y:24,rotation:0},
+{id:'wardrobe-1',kind:'wardrobe',name:'Wardrobe',width:120,depth:60,x:230,y:24,rotation:0},
 {id:'desk-1',kind:'desk',name:'Work desk',width:120,depth:60,x:22,y:248,rotation:0},
 {id:'chair-1',kind:'chair',name:'Chair',width:52,depth:52,x:58,y:315,rotation:0},
 {id:'plant-1',kind:'plant',name:'Plant',width:34,depth:34,x:292,y:342,rotation:0}]
@@ -34,9 +34,9 @@ const edit=(patch:Partial<Item>)=>{if(active)commit(items.map(i=>i.id===active.i
 const undo=()=>{const old=history.at(-1);if(old){setItems(old);setHistory(h=>h.slice(0,-1));setSaved(false)}}
 const rotate=()=>{if(active)edit({rotation:((active.rotation+90)%360) as Item['rotation']})}
 const remove=()=>{if(active){commit(items.filter(i=>i.id!==active.id));setSelected(null)}}
-const pointerDown=(e:React.PointerEvent<SVGRectElement>,i:Item)=>{e.preventDefault();e.stopPropagation();setSelected(i.id);const el=svg.current;if(!el)return;const p=el.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(el.getScreenCTM()!.inverse());drag.current={id:i.id,ox:q.x-20-i.x,oy:q.y-20-i.y};el.setPointerCapture(e.pointerId)}
+const pointerDown=(e:React.PointerEvent<SVGRectElement>,i:Item)=>{e.preventDefault();e.stopPropagation();setSelected(i.id);const el=svg.current;if(!el)return;const p=el.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(el.getScreenCTM()!.inverse());drag.current={id:i.id,ox:q.x-20-i.x,oy:q.y-20-i.y,before:items};el.setPointerCapture(e.pointerId)}
 const pointerMove=(e:React.PointerEvent<SVGSVGElement>)=>{if(!drag.current||!svg.current)return;const p=svg.current.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(svg.current.getScreenCTM()!.inverse());const d=drag.current;setItems(prev=>prev.map(i=>i.id===d.id?{...i,x:Math.round((q.x-20-d.ox)/5)*5,y:Math.round((q.y-20-d.oy)/5)*5}:i));setSaved(false)}
-const pointerUp=()=>{if(drag.current){drag.current=null;setHistory(h=>[...h.slice(-19),items])}}
+const pointerUp=()=>{if(drag.current){const before=drag.current.before;drag.current=null;setHistory(h=>[...h.slice(-19),before])}}
 const ask=async()=>{if(!goal.trim())return;setThinking(true);setError('');setProposal(null);try{const r=await fetch('/api/suggest-layout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({room:{width:room.width,depth:room.depth,unit:'cm'},furniture:items,goal,constraints:['Rectangular room. Coordinates start at top-left inside corner. Preserve furniture dimensions.']})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Could not generate a layout.');const next=items.map(i=>{const p=data.placements.find((v:Placement)=>v.furnitureId===i.id);return p?{...i,x:Math.round(p.x),y:Math.round(p.y),rotation:p.rotation}:i});setProposal({...data,items:next,issues:validate(next,room)})}catch(e){setError(e instanceof Error?e.message:'Could not generate a layout. Try again.')}finally{setThinking(false)}}
 const apply=()=>{if(proposal?.items&&!proposal.issues?.length){commit(proposal.items);setProposal(null);setNotice('Layout applied')}}
 const save=()=>{localStorage.setItem('forma-workspace-v1',JSON.stringify({room,items}));setSaved(true);setNotice('Workspace saved on this device')}
