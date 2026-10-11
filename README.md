@@ -1,17 +1,17 @@
 # NEXUS
 
-A floor plan you can drag furniture around. Enter a room's measurements, add the furniture you own, and see what fits before moving anything.
+NEXUS helps you plan a room around the furniture you own. Enter the room's measurements, arrange furniture on a scaled floor plan, and review fit issues before moving anything.
 
-## Features
+## What you can do
 
-- Floor plan drawn in centimetres, with rulers along the top and left edges
-- Drag, rotate and nudge furniture. Positions snap to 5 cm and sit flush against walls
-- Editable furniture names and sizes, plus exact distances from the left and top walls
-- Live checks for overlaps and pieces that reach past a wall, listed under the plan
-- Layout suggestions from a written goal, previewed on the plan before they are applied
-- Undo and redo, local saving, and JSON export
+- Create a floor plan in centimetres with rulers along the top and left edges
+- Drag, rotate and nudge furniture; positions snap to 5 cm and align with walls
+- Edit furniture names and dimensions, and set exact distances from the left and top walls
+- Identify overlapping pieces and furniture extending beyond room boundaries
+- Request layout suggestions from a written goal, preview proposed positions, and choose whether to apply them
+- Undo and redo changes, save a plan in the current browser, and export a JSON copy
 
-### Keyboard
+## Keyboard shortcuts
 
 | Key | Action |
 | --- | --- |
@@ -21,48 +21,48 @@ A floor plan you can drag furniture around. Enter a room's measurements, add the
 | Delete | Remove the selected piece |
 | Ctrl or Cmd + Z | Undo (add Shift to redo) |
 
-## Stack
+## Technology
 
-- React, TypeScript, Vite
-- SVG floor plan, plain CSS with design tokens in `src/styles/base.css`
-- Vercel serverless function for layout suggestions, which calls the OpenAI API from the server
+- React, TypeScript and Vite
+- SVG floor plan with CSS design tokens in `src/styles/base.css`
+- Vercel serverless function for layout suggestions, using the OpenAI API server-side
 
-## Project layout
+## Project structure
 
 ```
 api/suggest-layout.ts   Serverless route for layout suggestions
 src/planner/            Planner state, floor plan drawing, geometry and storage
 src/site/               Home, how it works, about and privacy pages
 src/styles/             Tokens and base styles, site styles, planner styles
-src/brand.ts            Product name and storage keys in one place
+src/brand.ts            Product name and storage keys
 ```
 
-## Local development
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-The floor plan, furniture editing, saving and export work without an API key. To try layout suggestions locally, use the Vercel CLI:
+Room editing, furniture placement, local saving and export work without an AI API key. To run the serverless layout suggestion endpoint locally, use the Vercel CLI:
 
 ```bash
 npx vercel dev
 ```
 
-Set `OPENAI_API_KEY` in the Vercel project environment. `OPENAI_MODEL` is optional and defaults to `gpt-4.1-mini`. Keep the key out of any `VITE_*` variable and out of the repository.
+Set `OPENAI_API_KEY` in the Vercel project environment. `OPENAI_MODEL` is optional and defaults to `gpt-4.1-mini`. Keep the API key out of any `VITE_*` variable and out of the repository.
 
 ## Deployment
 
-`vercel.json` rewrites every non-API path to `index.html`, so direct links such as `/workspace` and `/how-it-works` work after a refresh.
+`vercel.json` rewrites non-API paths to `index.html`, allowing direct links such as `/workspace` and `/how-it-works` to work after a refresh.
 
-## Current limits
+## Important planning notes
 
-- Furniture is entered by hand. Photos are not read.
-- Doors, windows and other fixed features cannot be placed yet.
-- Suggested layouts are checked for walls and overlaps only. They do not confirm walkway widths or building code compliance.
-- Plans are saved in the current browser. There are no accounts or cloud sync.
+- Furniture dimensions are entered manually. Room and furniture photos are not interpreted.
+- Doors, windows and other fixed features cannot be placed on the plan.
+- Layout checks flag overlaps and furniture outside the room; they do not verify walkway clearance, door access, accessibility requirements or building-code compliance.
+- Plans are saved in the current browser. There are no accounts or automatic cloud sync; export a JSON copy to move a plan to another device.
 
-## Naming
+## Brand
 
-NEXUS is the working product name. Check trademark, domain and app store availability before a public launch. The name is set in `src/brand.ts`, `index.html` and the page copy.
+The product name and local-storage keys are defined in `src/brand.ts`. Review brand, domain and trademark availability before expanding distribution.
