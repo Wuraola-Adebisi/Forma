@@ -31,24 +31,24 @@ const features = [
   {
     number: '01',
     title: 'Work with real measurements',
-    body: 'Set the room dimensions, enter the width and depth of your furniture, and arrange each piece on a scaled floor plan.',
+    body: 'Set your room dimensions, enter the width and depth of your furniture, and arrange each piece on a scaled floor plan.',
   },
   {
     number: '02',
-    title: 'See problems before moving',
-    body: 'NEXUS flags furniture that overlaps or extends beyond the room, helping you catch basic fit issues while the furniture is still where it is.',
+    title: 'Catch basic fit issues early',
+    body: 'NEXUS flags furniture that overlaps or extends beyond the room, helping you spot problems before you start moving things.',
   },
   {
     number: '03',
-    title: 'Try a different point of view',
-    body: 'Ask for a layout that makes more floor space, creates a work corner or improves the flow. Compare the suggestion with your current plan before applying it.',
+    title: 'Explore options with AI',
+    body: 'Describe what you want to improve and get a proposed arrangement shaped around your room, furniture and goal. Review it on the floor plan before applying it.',
   },
 ]
 
 const moments = [
-  { title: 'A room refresh', body: 'Rearrange what you already own before committing to a new setup.' },
+  { title: 'A room refresh', body: 'Use AI to explore new ways to arrange the furniture you already own.' },
   { title: 'A new piece of furniture', body: 'Check the footprint against your room before bringing it home.' },
-  { title: 'A move or a new home', body: 'Work out where the larger pieces might go before moving day.' },
+  { title: 'A move or a new home', body: 'Plan where larger pieces might go before moving day, then refine the layout as you go.' },
 ]
 
 export default function Home() {
@@ -56,10 +56,10 @@ export default function Home() {
     <main>
       <section className="wrap hero">
         <div className="hero-copy">
-          <p className="eyebrow">A little planning. A lot less lifting.</p>
+          <p className="eyebrow">AI-assisted room planning, grounded in real measurements.</p>
           <h1>Try the layout before you lift anything.</h1>
           <p className="lede">
-            Build a measured plan of your room, place the furniture you own, and explore arrangements before you start moving things around.
+            Map your room, add the furniture you own, then use AI to explore layout options shaped around your dimensions and goals. Review each proposal on your floor plan before making a move.
           </p>
           <div className="hero-actions">
             <Link to="/workspace" className="btn btn-primary btn-lg">Plan my room</Link>
@@ -75,7 +75,7 @@ export default function Home() {
             <div className="lead">
               <p className="eyebrow">Make the space make sense</p>
               <h2>Good room layouts start with what actually fits.</h2>
-              <p>Room inspiration can show you what looks good. A measured floor plan helps you work out what works in your own space, with your own furniture.</p>
+              <p>Inspiration is a starting point. NEXUS pairs your measurements with AI-generated layout ideas, so you can explore what might work in your own space with your own furniture.</p>
             </div>
             <ul className="rows">
               {features.map((f) => (
@@ -96,26 +96,26 @@ export default function Home() {
         <section className="ai-section">
           <div className="wrap ai-grid">
             <div className="ai-copy">
-              <p className="eyebrow">Planning, with a little help</p>
-              <h2>Bring AI into the layout, not just the conversation.</h2>
-              <p>Tell NEXUS what you want from the room. It uses your room dimensions, furniture details and goal to suggest another arrangement, so you have a concrete plan to consider instead of starting from scratch.</p>
-              <p>You stay in control: review the proposed positions, check for overlaps and decide whether to apply them. The suggestion is a starting point, not a substitute for measuring your space or checking access and clearances.</p>
+              <p className="eyebrow">From layout brief to proposal</p>
+              <h2>An AI layout partner, grounded in your room.</h2>
+              <p>Tell NEXUS what the room needs to do. It uses your dimensions, furniture details and goal as context to draft another arrangement, giving you a concrete option to evaluate instead of a blank page.</p>
+              <p>Every suggestion is a proposal, not a command. Preview the positions, review any flagged overlaps, and decide whether to apply it. You remain responsible for checking walkways, access and clearances in the actual room.</p>
               <Link to="/workspace" className="btn btn-primary">Explore a layout</Link>
             </div>
-            <div className="ai-card" aria-label="Example of a layout goal and suggested outcome">
-              <div className="ai-card-top"><span className="ai-pulse" /> LAYOUT GOAL</div>
+            <div className="ai-card" aria-label="Illustrative example of a layout brief and suggested outcome">
+              <div className="ai-card-top"><span className="ai-pulse" /> LAYOUT BRIEF</div>
               <p className="ai-prompt">“Make more room to move and give me a comfortable work corner.”</p>
               <div className="ai-divider" />
-              <div className="ai-result-label">YOUR NEXT ARRANGEMENT</div>
+              <div className="ai-result-label">POSSIBLE LAYOUT DIRECTION</div>
               <div className="ai-result">
                 <span className="ai-result-mark">01</span>
-                <div><strong>Open up the centre</strong><p>Move larger pieces towards the walls where the room dimensions allow.</p></div>
+                <div><strong>Open up the centre</strong><p>Consider moving larger pieces towards the walls where the dimensions allow.</p></div>
               </div>
               <div className="ai-result">
                 <span className="ai-result-mark">02</span>
-                <div><strong>Group work furniture</strong><p>Place the desk and chair together to make a dedicated work area.</p></div>
+                <div><strong>Group work furniture</strong><p>Place the desk and chair together to define a dedicated work area.</p></div>
               </div>
-              <p className="ai-card-foot">Illustrative goals. Suggestions depend on your room and furniture.</p>
+              <p className="ai-card-foot">Illustrative example. Generated suggestions vary with your room, furniture and goal.</p>
             </div>
           </div>
         </section>
@@ -142,7 +142,7 @@ export default function Home() {
       </Reveal>
 
       <Reveal>
-        <CtaBand title="Start with your room. See what could work." />
+        <CtaBand title="Bring your measurements. Explore what could work." />
       </Reveal>
     </main>
   )
