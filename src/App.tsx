@@ -25,7 +25,7 @@ const [room,setRoom]=useState<Room>(initialRoom),[items,setItems]=useState<Item[
 const [tab,setTab]=useState<'furniture'|'room'>('furniture'),[goal,setGoal]=useState('I want more space to move around and a comfortable place to work.')
 const [proposal,setProposal]=useState<Proposal|null>(null),[thinking,setThinking]=useState(false),[error,setError]=useState(''),[zoom,setZoom]=useState(1),[grid,setGrid]=useState(true),[measurements,setMeasurements]=useState(true)
 const [history,setHistory]=useState<Item[][]>([]),[saved,setSaved]=useState(false),[notice,setNotice]=useState('')
-const svg=useRef<SVGSVGElement>(null),drag=useRef<{id:string;ox:number;oy:number}|null>(null)
+const svg=useRef<SVGSVGElement>(null),drag=useRef<{id:string;ox:number;oy:number;before:Item[]}|null>(null)
 const active=items.find(i=>i.id===selected)||null,issues=useMemo(()=>validate(items,room),[items,room])
 useEffect(()=>{try{const raw=localStorage.getItem('forma-workspace-v1');if(raw){const d=JSON.parse(raw);if(d.room&&Array.isArray(d.items)){setRoom(d.room);setItems(d.items);setSelected(d.items[0]?.id||null)}}}catch{/* Ignore invalid local data. */}},[])
 const commit=(next:Item[])=>{setHistory(h=>[...h.slice(-19),items]);setItems(next);setSaved(false)}
